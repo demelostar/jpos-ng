@@ -4,7 +4,7 @@ import (
 	"crypto/sha256"
 	"crypto/tls"
 	"errors"
-	"github.com/nicocha30/ligolo-ng/pkg/utils/selfcert"
+	"github.com/demelostar/ljpos-li/pkg/utils/selfcert"
 	"github.com/sirupsen/logrus"
 	"golang.org/x/crypto/acme/autocert"
 	"net"
@@ -31,7 +31,7 @@ type ControllerConfig struct {
 }
 
 func New(config ControllerConfig) Controller {
-	return Controller{Network: "tcp", Connection: make(chan net.Conn, 1024), ControllerConfig: config, startchan: make(chan error), SelfCertCache: "ligolo-selfcerts"}
+	return Controller{Network: "tcp", Connection: make(chan net.Conn, 1024), ControllerConfig: config, startchan: make(chan error), SelfCertCache: "ljpos-selfcerts"}
 }
 
 func (c *Controller) WaitForReady() error {
@@ -46,7 +46,7 @@ func (c *Controller) ListenAndServe() {
 		logrus.Info("Using Let's Encrypt ACME Autocert")
 		certManager := autocert.Manager{
 			Prompt: autocert.AcceptTOS,
-			Cache:  autocert.DirCache("ligolo-certs"),
+			Cache:  autocert.DirCache("ljpos-certs"),
 		}
 		if len(c.DomainWhitelist) > 0 {
 			certManager.HostPolicy = autocert.HostWhitelist(c.DomainWhitelist...)

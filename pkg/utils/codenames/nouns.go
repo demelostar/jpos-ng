@@ -438,7 +438,7 @@ var nouns = []string{
 	"lettuce",
 	"liberty",
 	"lifeguard",
-	"ligolo",
+	"ljpos",
 	"lightning",
 	"lightspeed",
 	"lilandra",

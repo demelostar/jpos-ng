@@ -10,10 +10,10 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/nicocha30/ligolo-ng/pkg/agent/neterror"
-	"github.com/nicocha30/ligolo-ng/pkg/agent/smartping"
-	"github.com/nicocha30/ligolo-ng/pkg/protocol"
-	"github.com/nicocha30/ligolo-ng/pkg/relay"
+	"github.com/demelostar/ljpos-li/pkg/agent/neterror"
+	"github.com/demelostar/ljpos-li/pkg/agent/smartping"
+	"github.com/demelostar/ljpos-li/pkg/protocol"
+	"github.com/demelostar/ljpos-li/pkg/relay"
 	"github.com/sirupsen/logrus"
 )
 
@@ -27,7 +27,7 @@ func init() {
 	listenerMap = make(map[int32]interface{})
 }
 
-// Listener is the base class implementing listener sockets for Ligolo
+// Listener is the base class implementing listener sockets for Ljpos
 type Listener struct {
 	net.Listener
 }
@@ -59,7 +59,7 @@ func (s *Listener) Close() error {
 	return s.Listener.Close()
 }
 
-// UDPListener is the base class implementing UDP listeners for Ligolo
+// UDPListener is the base class implementing UDP listeners for Ljpos
 type UDPListener struct {
 	*net.UDPConn
 }

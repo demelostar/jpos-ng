@@ -7,18 +7,18 @@ import (
 	"io"
 )
 
-// LigoloEncoder is the structure containing the writer used when encoding Envelopes
-type LigoloEncoder struct {
+// LjposEncoder is the structure containing the writer used when encoding Envelopes
+type LjposEncoder struct {
 	writer io.Writer
 }
 
-// NewEncoder encode Ligolo-ng packets
-func NewEncoder(writer io.Writer) LigoloEncoder {
-	return LigoloEncoder{writer: writer}
+// NewEncoder encode Ljpos-li packets
+func NewEncoder(writer io.Writer) LjposEncoder {
+	return LjposEncoder{writer: writer}
 }
 
 // Encode an Envelope packet and write the result into the writer
-func (e *LigoloEncoder) Encode(envelope Envelope) error {
+func (e *LjposEncoder) Encode(envelope Envelope) error {
 	var payload bytes.Buffer
 	encoder := gob.NewEncoder(&payload)
 	if err := encoder.Encode(envelope.Payload); err != nil {

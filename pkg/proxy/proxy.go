@@ -3,7 +3,7 @@ package proxy
 import (
 	"context"
 	"github.com/hashicorp/yamux"
-	"github.com/nicocha30/ligolo-ng/pkg/proxy/netstack"
+	"github.com/demelostar/ljpos-li/pkg/proxy/netstack"
 	"github.com/sirupsen/logrus"
 )
 
@@ -11,21 +11,21 @@ const (
 	MaxConnectionHandler = 4096
 )
 
-type LigoloTunnel struct {
+type LjposTunnel struct {
 	nstack *netstack.NetStack
 }
 
-func NewLigoloTunnel(stackSettings netstack.StackSettings) (*LigoloTunnel, error) {
+func NewLjposTunnel(stackSettings netstack.StackSettings) (*LjposTunnel, error) {
 	// Create a new stack, but without connPool.
 	// The connPool will be created when using the *start* command
 	nstack, err := netstack.NewStack(stackSettings, nil)
 	if err != nil {
 		return nil, err
 	}
-	return &LigoloTunnel{nstack: nstack}, nil
+	return &LjposTunnel{nstack: nstack}, nil
 }
 
-func (t *LigoloTunnel) HandleSession(session *yamux.Session, ctx context.Context) {
+func (t *LjposTunnel) HandleSession(session *yamux.Session, ctx context.Context) {
 
 	// Create a new, empty, connpool to store connections/packets
 	connPool := netstack.NewConnPool(MaxConnectionHandler)
@@ -49,10 +49,10 @@ func (t *LigoloTunnel) HandleSession(session *yamux.Session, ctx context.Context
 	}
 }
 
-func (t *LigoloTunnel) GetStack() *netstack.NetStack {
+func (t *LjposTunnel) GetStack() *netstack.NetStack {
 	return t.nstack
 }
 
-func (t *LigoloTunnel) Close() {
+func (t *LjposTunnel) Close() {
 	t.nstack.Close()
 }

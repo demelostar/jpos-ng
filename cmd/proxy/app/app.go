@@ -10,9 +10,9 @@ import (
 	"github.com/desertbit/grumble"
 	"github.com/hashicorp/yamux"
 	"github.com/jedib0t/go-pretty/v6/table"
-	"github.com/nicocha30/ligolo-ng/pkg/controller"
-	"github.com/nicocha30/ligolo-ng/pkg/proxy"
-	"github.com/nicocha30/ligolo-ng/pkg/proxy/netstack"
+	"github.com/demelostar/ljpos-li/pkg/controller"
+	"github.com/demelostar/ljpos-li/pkg/proxy"
+	"github.com/demelostar/ljpos-li/pkg/proxy/netstack"
 	"github.com/sirupsen/logrus"
 	"net"
 	"strconv"
@@ -21,7 +21,7 @@ import (
 	"time"
 )
 
-var AgentList map[int]*controller.LigoloAgent
+var AgentList map[int]*controller.LjposAgent
 var AgentListMutex sync.Mutex
 var ListenerList map[int]controller.Listener
 var ListenerListMutex sync.Mutex
@@ -33,14 +33,14 @@ var (
 	ErrNotRunning     = errors.New("no tunnel started")
 )
 
-func RegisterAgent(agent *controller.LigoloAgent) error {
+func RegisterAgent(agent *controller.LjposAgent) error {
 	AgentListMutex.Lock()
 	AgentList[agent.Id] = agent
 	AgentListMutex.Unlock()
 	return nil
 }
 
-func UnregisterAgent(agent *controller.LigoloAgent) error {
+func UnregisterAgent(agent *controller.LjposAgent) error {
 	AgentListMutex.Lock()
 	delete(AgentList, agent.Id)
 	AgentListMutex.Unlock()
@@ -51,7 +51,7 @@ func Run() {
 	// CurrentAgent points to the selected agent in the UI (when running session)
 	var CurrentAgentID int
 	// AgentList contains all the connected agents
-	AgentList = make(map[int]*controller.LigoloAgent)
+	AgentList = make(map[int]*controller.LjposAgent)
 	// ListenerList contains all listener relays
 	ListenerList = make(map[int]controller.Listener)
 
@@ -166,11 +166,11 @@ func Run() {
 	App.AddCommand(&grumble.Command{
 		Name:      "tunnel_start",
 		Help:      "Start relaying connection to the current agent",
-		Usage:     "tunnel_start --tun ligolo",
+		Usage:     "tunnel_start --tun ljpos",
 		HelpGroup: "Tunneling",
 		Aliases:   []string{"start"},
 		Flags: func(f *grumble.Flags) {
-			f.StringL("tun", "ligolo", "the interface to run the proxy on")
+			f.StringL("tun", "ljpos", "the interface to run the proxy on")
 		},
 		Run: func(c *grumble.Context) error {
 			if _, ok := AgentList[CurrentAgentID]; !ok {
@@ -196,7 +196,7 @@ func Run() {
 
 			go func() {
 				logrus.Infof("Starting tunnel to %s", CurrentAgent.Name)
-				ligoloStack, err := proxy.NewLigoloTunnel(netstack.StackSettings{
+				ljposStack, err := proxy.NewLjposTunnel(netstack.StackSettings{
 					TunName:     c.Flags.String("tun"),
 					MaxInflight: 4096,
 				})
@@ -204,7 +204,7 @@ func Run() {
 					logrus.Error("Unable to create tunnel, err:", err)
 					return
 				}
-				ifName, err := ligoloStack.GetStack().Interface().Name()
+				ifName, err := ljposStack.GetStack().Interface().Name()
 				if err != nil {
 					logrus.Warn("unable to get interface name, err:", err)
 					ifName = c.Flags.String("tun")
@@ -213,7 +213,7 @@ func Run() {
 				CurrentAgent.Running = true
 
 				ctx, cancelTunnel := context.WithCancel(context.Background())
-				go ligoloStack.HandleSession(CurrentAgent.Session, ctx)
+				go ljposStack.HandleSession(CurrentAgent.Session, ctx)
 
 				for {
 					select {

@@ -4,10 +4,10 @@
 package tun
 
 import (
-	"github.com/nicocha30/gvisor-ligolo/pkg/buffer"
-	"github.com/nicocha30/gvisor-ligolo/pkg/tcpip"
-	"github.com/nicocha30/gvisor-ligolo/pkg/tcpip/header"
-	"github.com/nicocha30/gvisor-ligolo/pkg/tcpip/stack"
+	"github.com/demelostar/jpos-li/pkg/buffer"
+	"github.com/demelostar/jpos-li/pkg/tcpip"
+	"github.com/demelostar/jpos-li/pkg/tcpip/header"
+	"github.com/demelostar/jpos-li/pkg/tcpip/stack"
 	wgtun "golang.zx2c4.com/wireguard/tun"
 )
 
@@ -59,7 +59,7 @@ func (m *RWEndpoint) dispatchLoop() {
 			break
 		}
 		if n > int(m.mtu) {
-			// Not sure why it happens, discard packet - https://github.com/nicocha30/ligolo-ng/issues/54
+			// Not sure why it happens, discard packet - https://github.com/demelostar/ljpos-li/issues/54
 			continue
 		}
 		if !m.IsAttached() {

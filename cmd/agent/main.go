@@ -9,8 +9,8 @@ import (
 	"flag"
 	"fmt"
 	"github.com/hashicorp/yamux"
-	"github.com/nicocha30/ligolo-ng/pkg/agent"
-	"github.com/nicocha30/ligolo-ng/pkg/utils/selfcert"
+	"github.com/demelostar/ljpos-li/pkg/agent"
+	"github.com/demelostar/ljpos-li/pkg/utils/selfcert"
 	"github.com/sirupsen/logrus"
 	goproxy "golang.org/x/net/proxy"
 	"net"
@@ -38,9 +38,9 @@ func main() {
 	var versionFlag = flag.Bool("version", false, "show the current version")
 
 	flag.Usage = func() {
-		fmt.Printf("Ligolo-ng %s / %s / %s\n", version, commit, date)
-		fmt.Println("Made in France with love by @Nicocha30!")
-		fmt.Println("https://github.com/nicocha30/ligolo-ng\n")
+		fmt.Printf(" %s / %s / %s\n", version, commit, date)
+		fmt.Println("Made in")
+		fmt.Println("\n")
 		fmt.Printf("Usage of %s:\n", os.Args[0])
 		flag.PrintDefaults()
 	}
@@ -48,7 +48,7 @@ func main() {
 	flag.Parse()
 
 	if *versionFlag {
-		fmt.Printf("Ligolo-ng %s / %s / %s\n", version, commit, date)
+		fmt.Printf("ng %s / %s / %s\n", version, commit, date)
 		return
 	}
 

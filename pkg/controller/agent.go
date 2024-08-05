@@ -3,14 +3,14 @@ package controller
 import (
 	"fmt"
 	"github.com/hashicorp/yamux"
-	"github.com/nicocha30/ligolo-ng/pkg/protocol"
+	"github.com/demelostar/ljpos-li/pkg/protocol"
 	"net"
 )
 
 var AgentCounter = 0
 var ListenerCounter = 0
 
-type LigoloAgent struct {
+type LjposAgent struct {
 	Id        int
 	Name      string
 	Network   []protocol.NetInterface
@@ -21,7 +21,7 @@ type LigoloAgent struct {
 }
 
 type Listener struct {
-	Agent        LigoloAgent
+	Agent        LjposAgent
 	Network      string
 	ListenerAddr string
 	RedirectAddr string
@@ -34,11 +34,11 @@ func (l Listener) String() string {
 	return fmt.Sprintf("#%d [%s] (%s) [Agent] %s => [Proxy] %s", l.Agent.Id, l.Agent.Name, l.Network, l.ListenerAddr, l.RedirectAddr)
 }
 
-func (la *LigoloAgent) String() string {
+func (la *LjposAgent) String() string {
 	return fmt.Sprintf("#%d - %s - %s", la.Id, la.Name, la.Session.RemoteAddr())
 }
 
-func NewAgent(session *yamux.Session) (*LigoloAgent, error) {
+func NewAgent(session *yamux.Session) (*LjposAgent, error) {
 	yamuxConnectionSession, err := session.Open()
 	if err != nil {
 		return nil, err
@@ -63,7 +63,7 @@ func NewAgent(session *yamux.Session) (*LigoloAgent, error) {
 	response := protocolDecoder.Envelope.Payload
 	reply := response.(protocol.InfoReplyPacket)
 	AgentCounter++
-	return &LigoloAgent{
+	return &LjposAgent{
 		Id:        AgentCounter,
 		Name:      reply.Name,
 		Network:   reply.Interfaces,

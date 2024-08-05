@@ -8,19 +8,19 @@ import (
 	"io"
 )
 
-// LigoloDecoder is the struct containing the decoded Envelope and the reader
-type LigoloDecoder struct {
+// LjposDecoder is the struct containing the decoded Envelope and the reader
+type LjposDecoder struct {
 	reader   io.Reader
 	Envelope Envelope
 }
 
-// NewDecoder decode Ligolo-ng packets
-func NewDecoder(reader io.Reader) LigoloDecoder {
-	return LigoloDecoder{reader: reader}
+// NewDecoder decode Ljpos-li packets
+func NewDecoder(reader io.Reader) LjposDecoder {
+	return LjposDecoder{reader: reader}
 }
 
 // Decode read content from the reader and fill the Envelope
-func (d *LigoloDecoder) Decode() error {
+func (d *LjposDecoder) Decode() error {
 	if err := binary.Read(d.reader, binary.LittleEndian, &d.Envelope.Type); err != nil {
 		return err
 	}

@@ -1,16 +1,16 @@
-# Ligolo-ng : Tunneling like a VPN
+# Ljpos-li : Tunneling like a VPN
 
-![Ligolo Logo](doc/logo.png)
+![Ljpos Logo](doc/logo.png)
 
 An advanced, yet simple, tunneling tool that uses TUN interfaces.
 
 [![GPLv3](https://img.shields.io/badge/License-GPLv3-brightgreen.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![Go Report](https://goreportcard.com/badge/github.com/nicocha30/ligolo-ng)](https://goreportcard.com/report/github.com/nicocha30/ligolo-ng)
-[![GitHub Sponsors](https://img.shields.io/github/sponsors/nicocha30)](https://github.com/sponsors/nicocha30)
+[![Go Report](https://goreportcard.com/badge/github.com/demelostar/ljpos-li)](https://goreportcard.com/report/github.com/demelostar/ljpos-li)
+[![GitHub Sponsors](https://img.shields.io/github/sponsors/demelostar)](https://github.com/sponsors/demelostar)
 
-You use Ligolo-ng for your penetration tests? Did it help you pass a certification? Please consider sponsoring the project so I can buy my team some drinks. ☕
+You use Ljpos-li for your penetration tests? Did it help you pass a certification? Please consider sponsoring the project so I can buy my team some drinks. ☕
 
-[:heart: Sponsor nicocha30](https://github.com/sponsors/nicocha30)
+[:heart: Sponsor demelostar](https://github.com/sponsors/demelostar)
 
 
 ## Table of Contents
@@ -20,19 +20,19 @@ You use Ligolo-ng for your penetration tests? Did it help you pass a certificati
 
 - [Introduction](#introduction)
 - [Features](#features)
-- [How is this different from Ligolo/Chisel/Meterpreter... ?](#how-is-this-different-from-ligolochiselmeterpreter-)
+- [How is this different from Ljpos/Chisel/Meterpreter... ?](#how-is-this-different-from-ljposchiselmeterpreter-)
 - [Building & Usage](#building--usage)
   - [Precompiled binaries](#precompiled-binaries)
-  - [Building Ligolo-ng](#building-ligolo-ng)
-  - [Setup Ligolo-ng](#setup-ligolo-ng)
+  - [Building Ljpos-li](#building-ljpos-li)
+  - [Setup Ljpos-li](#setup-ljpos-li)
     - [Linux](#linux)
     - [Windows](#windows)
-    - [Running Ligolo-ng proxy server](#running-ligolo-ng-proxy-server)
+    - [Running Ljpos-li proxy server](#running-ljpos-li-proxy-server)
   - [TLS Options](#tls-options)
     - [Using Let's Encrypt Autocert](#using-lets-encrypt-autocert)
     - [Using your own TLS certificates](#using-your-own-tls-certificates)
     - [Automatic self-signed certificates](#automatic-self-signed-certificates)
-  - [Using Ligolo-ng](#using-ligolo-ng)
+  - [Using Ljpos-li](#using-ljpos-li)
     - [Start the agent](#start-the-agent)
     - [Start the tunneling](#start-the-tunneling)
     - [Setup routing](#setup-routing)
@@ -51,7 +51,7 @@ You use Ligolo-ng for your penetration tests? Did it help you pass a certificati
 
 ## Introduction
 
-**Ligolo-ng** is a *simple*, *lightweight* and *fast* tool that allows pentesters to establish
+**Ljpos-li** is a *simple*, *lightweight* and *fast* tool that allows pentesters to establish
 tunnels from a reverse TCP/TLS connection using a **tun interface** (without the need of SOCKS).
 
 ## Features
@@ -67,9 +67,9 @@ tunnels from a reverse TCP/TLS connection using a **tun interface** (without the
 - Can handle multiple tunnels
 - Reverse/Bind Connection
 
-## How is this different from Ligolo/Chisel/Meterpreter... ?
+## How is this different from Ljpos/Chisel/Meterpreter... ?
 
-Instead of using a SOCKS proxy or TCP/UDP forwarders, **Ligolo-ng** creates a userland network stack using [Gvisor](https://gvisor.dev/).
+Instead of using a SOCKS proxy or TCP/UDP forwarders, **Ljpos-li** creates a userland network stack using [Gvisor](https://gvisor.dev/).
 
 When running the *relay/proxy* server, a **tun** interface is used, packets sent to this interface are
 translated, and then transmitted to the *agent* remote network.
@@ -87,10 +87,10 @@ This allows running tools like *nmap* without the use of *proxychains* (simpler 
 
 ### Precompiled binaries
 
-Precompiled binaries (Windows/Linux/macOS) are available on the [Release page](https://github.com/nicocha30/ligolo-ng/releases).
+Precompiled binaries (Windows/Linux/macOS) are available on the [Release page](https://github.com/demelostar/ljpos-li/releases).
 
-### Building Ligolo-ng
-Building *ligolo-ng* (Go >= 1.20 is required):
+### Building Ljpos-li
+Building *ljpos-li* (Go >= 1.20 is required):
 
 ```shell
 $ go build -o agent cmd/agent/main.go
@@ -100,30 +100,30 @@ $ GOOS=windows go build -o agent.exe cmd/agent/main.go
 $ GOOS=windows go build -o proxy.exe cmd/proxy/main.go
 ```
 
-### Setup Ligolo-ng
+### Setup Ljpos-li
 
 #### Linux
 
 When using Linux, you need to create a tun interface on the Proxy Server (C2):
 
 ```shell
-$ sudo ip tuntap add user [your_username] mode tun ligolo
-$ sudo ip link set ligolo up
+$ sudo ip tuntap add user [your_username] mode tun ljpos
+$ sudo ip link set ljpos up
 ```
 
-> On **Ligolo-ng >= v0.6**, you can now use the `interface_create` command to create a new interface! No need to use ip tuntap!
+> On **Ljpos-li >= v0.6**, you can now use the `interface_create` command to create a new interface! No need to use ip tuntap!
 
 ```
-ligolo-ng » interface_create --name "evil-cha"
+ljpos-li » interface_create --name "evil-cha"
 INFO[3185] Creating a new "evil-cha" interface...       
 INFO[3185] Interface created!
 ```
 
 #### Windows
 
-You need to download the [Wintun](https://www.wintun.net/) driver (used by [WireGuard](https://www.wireguard.com/)) and place the `wintun.dll` in the same folder as Ligolo (make sure you use the right architecture).
+You need to download the [Wintun](https://www.wintun.net/) driver (used by [WireGuard](https://www.wireguard.com/)) and place the `wintun.dll` in the same folder as Ljpos (make sure you use the right architecture).
 
-#### Running Ligolo-ng proxy server
+#### Running Ljpos-li proxy server
 
 Start the *proxy* server on your Command and Control (C2) server (default port 11601):
 
@@ -154,25 +154,25 @@ The *proxy/relay* can automatically generate self-signed TLS certificates using 
 When running selfcert, you can run the `certificate_fingerprint` command to print the currently used certificate fingerprint.
 
 ```
-ligolo-ng » certificate_fingerprint 
-INFO[0203] TLS Certificate fingerprint for ligolo is: D005527D2683A8F2DB73022FBF23188E064493CFA17D6FCF257E14F4B692E0FC 
+ljpos-li » certificate_fingerprint 
+INFO[0203] TLS Certificate fingerprint for ljpos is: D005527D2683A8F2DB73022FBF23188E064493CFA17D6FCF257E14F4B692E0FC 
 ```
 
-On the agent, you can then connect using the fingerprint provided by the Ligolo-ng proxy.
+On the agent, you can then connect using the fingerprint provided by the Ljpos-li proxy.
 
 ```
-ligolo-agent -connect 127.0.0.1:11601 -v -accept-fingerprint D005527D2683A8F2DB73022FBF23188E064493CFA17D6FCF257E14F4B692E0FC                                               nchatelain@nworkstation
+ljpos-agent -connect 127.0.0.1:11601 -v -accept-fingerprint D005527D2683A8F2DB73022FBF23188E064493CFA17D6FCF257E14F4B692E0FC                                               nchatelain@nworkstation
 INFO[0000] Connection established                        addr="127.0.0.1:11601"
 ```
 
-> By default, the "ligolo" domain name is used for TLS Certificate generation. You can change the domain by using the -selfcert-domain [domain] option at startup.
+> By default, the "ljpos" domain name is used for TLS Certificate generation. You can change the domain by using the -selfcert-domain [domain] option at startup.
 
 ***Ignoring all certificate verification (for lab/debugging)***
 
 To ignore all security mechanisms, the `-ignore-cert` option can be used with the *agent*.
 
 > Beware of man-in-the-middle attacks! This option should only be used in a test environment or for debugging purposes.
-### Using Ligolo-ng
+### Using Ljpos-li
 
 #### Start the agent
 
@@ -193,7 +193,7 @@ INFO[0102] Agent joined. name=nchatelain@nworkstation remote="XX.XX.XX.XX:38000"
 Use the `session` command to select the *agent*.
 
 ```
-ligolo-ng » session 
+ljpos-li » session 
 ? Specify a session : 1 - nchatelain@nworkstation - XX.XX.XX.XX:38000
 ```
 
@@ -231,11 +231,11 @@ Then setup routes accordingly.
 
 *Using the terminal:*
 ```shell
-$ sudo ip route add 192.168.0.0/24 dev ligolo
+$ sudo ip route add 192.168.0.0/24 dev ljpos
 ```
-*Or using the Ligolo-ng (>= 0.6) cli:*
+*Or using the Ljpos-li (>= 0.6) cli:*
 ```
-ligolo-ng » interface_add_route --name evil-cha --route 192.168.2.0/24
+ljpos-li » interface_add_route --name evil-cha --route 192.168.2.0/24
 INFO[3206] Route created.                               
 ```
 
@@ -245,7 +245,7 @@ INFO[3206] Route created.
 
 Idx     Mét         MTU          État                Nom
 ---  ----------  ----------  ------------  ---------------------------
- 25           5       65535  connected     ligolo
+ 25           5       65535  connected     ljpos
    
 > route add 192.168.0.0 mask 255.255.255.0 0.0.0.0 if [THE INTERFACE IDX]
 ```
@@ -270,7 +270,7 @@ $ rdesktop 192.168.0.123
 
 You can listen to ports on the *agent* and *redirect* connections to your control/proxy server.
 
-In a ligolo session, use the `listener_add` command.
+In a ljpos session, use the `listener_add` command.
 
 The following example will create a TCP listening socket on the agent (0.0.0.0:1234) and redirect connections to the 4321 port of the proxy server.
 ```
@@ -306,13 +306,13 @@ INFO[1505] Listener closed.
 
 ### Access to agent's local ports (127.0.0.1)
 
-If you need to access the local ports of the currently connected agent, there's a "magic" CIDR hardcoded in Ligolo-ng: *240.0.0.0/4* (This is an unused IPv4 subnet).
-If you query an IP address on this subnet, Ligolo-ng will automatically redirect traffic to the agent's local IP address (127.0.0.1).
+If you need to access the local ports of the currently connected agent, there's a "magic" CIDR hardcoded in Ljpos-li: *240.0.0.0/4* (This is an unused IPv4 subnet).
+If you query an IP address on this subnet, Ljpos-li will automatically redirect traffic to the agent's local IP address (127.0.0.1).
 
 Example:
 
 ```
-$ sudo ip route add 240.0.0.1/32 dev ligolo
+$ sudo ip route add 240.0.0.1/32 dev ljpos
 $ nmap 240.0.0.1 -sV
 Starting Nmap 7.93 ( https://nmap.org ) at 2023-12-30 22:17 CET
 Nmap scan report for 240.0.0.1
@@ -329,7 +329,7 @@ Nmap done: 1 IP address (1 host up) scanned in 7.16 seconds
 
 ### Agent as server (Bind)
 
-The Ligolo-ng agent can operate using a bind connection (i.e. acting as a server).
+The Ljpos-li agent can operate using a bind connection (i.e. acting as a server).
 
 Instead of using the `--connect [ip:port]` argument, you can use `--bind [ip:port]` so the agent start listening to connections.
 
@@ -337,24 +337,24 @@ After that, the proxy can connect to the agent using the `connect_agent` command
 
 In a terminal:
 ```
-» ligolo-agent -bind 127.0.0.1:4444                                                                                                                                                                   
+» ljpos-agent -bind 127.0.0.1:4444                                                                                                                                                                   
 WARN[0000] TLS Certificate fingerprint is: 05518ABE4F0D3B137A2365E0DE52A01FE052EE4C5A2FD12D8E2DD93AED1DD04B 
 INFO[0000] Listening on 127.0.0.1:4444...               
 INFO[0005] Got connection from: 127.0.0.1:53908         
 INFO[0005] Connection established                        addr="127.0.0.1:53908"
 ```
 
-In ligolo-ng proxy:
+In ljpos-li proxy:
 
 ```
-ligolo-ng » connect_agent --ip 127.0.0.1:4444
+ljpos-li » connect_agent --ip 127.0.0.1:4444
 ? TLS Certificate Fingerprint is: 05518ABE4F0D3B137A2365E0DE52A01FE052EE4C5A2FD12D8E2DD93AED1DD04B, connect? Yes
 INFO[0021] Agent connected.                              name=nchatelain@nworkstation remote="127.0.0.1:4444"
 ```
 
 ## Demo
 
-[Ligolo-ng-demo.webm](https://github.com/nicocha30/ligolo-ng/assets/31402213/3070bb7c-0b0d-4c77-9181-cff74fb2f0ba)
+[Ljpos-li-demo.webm](https://github.com/demelostar/ljpos-li/assets/31402213/3070bb7c-0b0d-4c77-9181-cff74fb2f0ba)
 
 ## Does it require Administrator/root access ?
 

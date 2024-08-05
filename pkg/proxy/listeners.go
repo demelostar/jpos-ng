@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 	"github.com/hashicorp/yamux"
-	"github.com/nicocha30/ligolo-ng/pkg/protocol"
-	"github.com/nicocha30/ligolo-ng/pkg/relay"
+	"github.com/demelostar/ljpos-li/pkg/protocol"
+	"github.com/demelostar/ljpos-li/pkg/relay"
 	"github.com/sirupsen/logrus"
 	"io"
 	"net"
@@ -18,11 +18,11 @@ func ListenerStop(sess *yamux.Session, listenerId int32) error {
 		return err
 	}
 
-	ligoloProtocol := protocol.NewEncoderDecoder(yamuxConnectionSession)
+	ljposProtocol := protocol.NewEncoderDecoder(yamuxConnectionSession)
 
 	// Send close request
 	closeRequest := protocol.ListenerCloseRequestPacket{ListenerID: listenerId}
-	if err := ligoloProtocol.Encode(protocol.Envelope{
+	if err := ljposProtocol.Encode(protocol.Envelope{
 		Type:    protocol.MessageListenerCloseRequest,
 		Payload: closeRequest,
 	}); err != nil {
@@ -30,11 +30,11 @@ func ListenerStop(sess *yamux.Session, listenerId int32) error {
 	}
 
 	// Process close response
-	if err := ligoloProtocol.Decode(); err != nil {
+	if err := ljposProtocol.Decode(); err != nil {
 		return err
 
 	}
-	response := ligoloProtocol.Envelope.Payload
+	response := ljposProtocol.Envelope.Payload
 
 	if err := response.(protocol.ListenerCloseResponsePacket).Err; err != false {
 		return errors.New(response.(protocol.ListenerCloseResponsePacket).ErrString)
@@ -42,7 +42,7 @@ func ListenerStop(sess *yamux.Session, listenerId int32) error {
 	return nil
 }
 
-type LigoloListener struct {
+type LjposListener struct {
 	ID      int32
 	ctx     context.Context
 	sess    *yamux.Session
@@ -52,36 +52,36 @@ type LigoloListener struct {
 	to      string
 }
 
-func NewListener(sess *yamux.Session, addr string, network string, to string) (LigoloListener, error) {
+func NewListener(sess *yamux.Session, addr string, network string, to string) (LjposListener, error) {
 	// Open a new Yamux Session
 	conn, err := sess.Open()
 	if err != nil {
-		return LigoloListener{}, err
+		return LjposListener{}, err
 	}
 
-	ligoloProtocol := protocol.NewEncoderDecoder(conn)
+	ljposProtocol := protocol.NewEncoderDecoder(conn)
 
 	// Request to open a new port on the agent
 	listenerPacket := protocol.ListenerRequestPacket{Address: addr, Network: network}
-	if err := ligoloProtocol.Encode(protocol.Envelope{
+	if err := ljposProtocol.Encode(protocol.Envelope{
 		Type:    protocol.MessageListenerRequest,
 		Payload: listenerPacket,
 	}); err != nil {
-		return LigoloListener{}, err
+		return LjposListener{}, err
 	}
 
 	// Get response from agent
-	if err := ligoloProtocol.Decode(); err != nil {
-		return LigoloListener{}, err
+	if err := ljposProtocol.Decode(); err != nil {
+		return LjposListener{}, err
 	}
-	response := ligoloProtocol.Envelope.Payload.(protocol.ListenerResponsePacket)
+	response := ljposProtocol.Envelope.Payload.(protocol.ListenerResponsePacket)
 	if err := response.Err; err != false {
-		return LigoloListener{}, errors.New(response.ErrString)
+		return LjposListener{}, errors.New(response.ErrString)
 	}
-	return LigoloListener{ID: response.ListenerID, sess: sess, Conn: conn, addr: addr, network: network, to: to}, nil
+	return LjposListener{ID: response.ListenerID, sess: sess, Conn: conn, addr: addr, network: network, to: to}, nil
 }
 
-func (l *LigoloListener) StartRelay() error {
+func (l *LjposListener) StartRelay() error {
 	if l.network == "tcp" {
 		return l.relayTCP()
 	} else if l.network == "udp" {
@@ -90,11 +90,11 @@ func (l *LigoloListener) StartRelay() error {
 	return errors.New("invalid network")
 }
 
-func (l *LigoloListener) relayTCP() error {
-	ligoloProtocol := protocol.NewEncoderDecoder(l.Conn)
+func (l *LjposListener) relayTCP() error {
+	ljposProtocol := protocol.NewEncoderDecoder(l.Conn)
 	for {
 		// Wait for BindResponses
-		if err := ligoloProtocol.Decode(); err != nil {
+		if err := ljposProtocol.Decode(); err != nil {
 			if err == io.EOF {
 				// Listener closed.
 				return nil
@@ -103,7 +103,7 @@ func (l *LigoloListener) relayTCP() error {
 		}
 
 		// We received a new BindResponse!
-		response := ligoloProtocol.Envelope.Payload.(protocol.ListenerBindReponse)
+		response := ljposProtocol.Envelope.Payload.(protocol.ListenerBindReponse)
 
 		if err := response.Err; err != false {
 			return errors.New(response.ErrString)
@@ -162,7 +162,7 @@ func (l *LigoloListener) relayTCP() error {
 
 }
 
-func (l *LigoloListener) relayUDP() error {
+func (l *LjposListener) relayUDP() error {
 	// Dial the "to" target
 	lconn, err := net.Dial(l.network, l.to)
 	if err != nil {

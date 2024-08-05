@@ -4,7 +4,7 @@ import (
 	"net"
 )
 
-// Envelope is the structure used when Encoding/Decode ligolo packets
+// Envelope is the structure used when Encoding/Decode ljpos packets
 type Envelope struct {
 	Type    uint8
 	Size    int32

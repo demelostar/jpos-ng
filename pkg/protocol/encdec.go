@@ -2,13 +2,13 @@ package protocol
 
 import "io"
 
-type LigoloEncoderDecoder struct {
-	LigoloDecoder
-	LigoloEncoder
+type LjposEncoderDecoder struct {
+	LjposDecoder
+	LjposEncoder
 }
 
-func NewEncoderDecoder(rw io.ReadWriter) LigoloEncoderDecoder {
-	return LigoloEncoderDecoder{
+func NewEncoderDecoder(rw io.ReadWriter) LjposEncoderDecoder {
+	return LjposEncoderDecoder{
 		NewDecoder(rw),
 		NewEncoder(rw),
 	}

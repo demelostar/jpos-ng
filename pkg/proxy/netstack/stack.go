@@ -3,15 +3,15 @@ package netstack
 import (
 	"errors"
 	"fmt"
-	"github.com/nicocha30/gvisor-ligolo/pkg/tcpip"
-	"github.com/nicocha30/gvisor-ligolo/pkg/tcpip/header"
-	"github.com/nicocha30/gvisor-ligolo/pkg/tcpip/network/ipv4"
-	"github.com/nicocha30/gvisor-ligolo/pkg/tcpip/network/ipv6"
-	"github.com/nicocha30/gvisor-ligolo/pkg/tcpip/stack"
-	"github.com/nicocha30/gvisor-ligolo/pkg/tcpip/transport/icmp"
-	"github.com/nicocha30/gvisor-ligolo/pkg/tcpip/transport/tcp"
-	"github.com/nicocha30/gvisor-ligolo/pkg/tcpip/transport/udp"
-	"github.com/nicocha30/ligolo-ng/pkg/proxy/netstack/tun"
+	"github.com/demelostar/jpos-li/pkg/tcpip"
+	"github.com/demelostar/jpos-li/pkg/tcpip/header"
+	"github.com/demelostar/jpos-li/pkg/tcpip/network/ipv4"
+	"github.com/demelostar/jpos-li/pkg/tcpip/network/ipv6"
+	"github.com/demelostar/jpos-li/pkg/tcpip/stack"
+	"github.com/demelostar/jpos-li/pkg/tcpip/transport/icmp"
+	"github.com/demelostar/jpos-li/pkg/tcpip/transport/tcp"
+	"github.com/demelostar/jpos-li/pkg/tcpip/transport/udp"
+	"github.com/demelostar/ljpos-li/pkg/proxy/netstack/tun"
 	"github.com/sirupsen/logrus"
 	"sync"
 )
@@ -102,7 +102,7 @@ func (s *NetStack) GetStack() *stack.Stack {
 	return s.stack
 }
 
-// SetConnPool is used to change the current connPool. It must be used after switching Ligolo agents
+// SetConnPool is used to change the current connPool. It must be used after switching Ljpos agents
 func (s *NetStack) SetConnPool(connPool *ConnPool) {
 	s.Lock()
 	s.pool = connPool

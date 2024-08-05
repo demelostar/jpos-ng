@@ -3,10 +3,10 @@
 package tun
 
 import (
-	"github.com/nicocha30/gvisor-ligolo/pkg/tcpip/link/fdbased"
-	"github.com/nicocha30/gvisor-ligolo/pkg/tcpip/link/rawfile"
-	"github.com/nicocha30/gvisor-ligolo/pkg/tcpip/link/tun"
-	"github.com/nicocha30/gvisor-ligolo/pkg/tcpip/stack"
+	"github.com/demelostar/jpos-li/pkg/tcpip/link/fdbased"
+	"github.com/demelostar/jpos-li/pkg/tcpip/link/rawfile"
+	"github.com/demelostar/jpos-li/pkg/tcpip/link/tun"
+	"github.com/demelostar/jpos-li/pkg/tcpip/stack"
 	"golang.org/x/sys/unix"
 )
 

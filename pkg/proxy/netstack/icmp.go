@@ -4,15 +4,15 @@ import (
 	"bytes"
 	"errors"
 
-	"github.com/nicocha30/gvisor-ligolo/pkg/buffer"
-	"github.com/nicocha30/gvisor-ligolo/pkg/tcpip"
-	"github.com/nicocha30/gvisor-ligolo/pkg/tcpip/checksum"
-	"github.com/nicocha30/gvisor-ligolo/pkg/tcpip/header"
-	"github.com/nicocha30/gvisor-ligolo/pkg/tcpip/network/ipv4"
-	"github.com/nicocha30/gvisor-ligolo/pkg/tcpip/stack"
-	"github.com/nicocha30/gvisor-ligolo/pkg/tcpip/transport/icmp"
-	"github.com/nicocha30/gvisor-ligolo/pkg/tcpip/transport/raw"
-	"github.com/nicocha30/gvisor-ligolo/pkg/waiter"
+	"github.com/demelostar/jpos-li/pkg/buffer"
+	"github.com/demelostar/jpos-li/pkg/tcpip"
+	"github.com/demelostar/jpos-li/pkg/tcpip/checksum"
+	"github.com/demelostar/jpos-li/pkg/tcpip/header"
+	"github.com/demelostar/jpos-li/pkg/tcpip/network/ipv4"
+	"github.com/demelostar/jpos-li/pkg/tcpip/stack"
+	"github.com/demelostar/jpos-li/pkg/tcpip/transport/icmp"
+	"github.com/demelostar/jpos-li/pkg/tcpip/transport/raw"
+	"github.com/demelostar/jpos-li/pkg/waiter"
 	"github.com/sirupsen/logrus"
 )
 
@@ -109,7 +109,7 @@ func ProcessICMP(nstack *stack.Stack, pkt stack.PacketBufferPtr) {
 		return
 	}
 	h := header.ICMPv4(v)
-	// Ligolo-ng: not sure why, but checksum is invalid here.
+	// Ljpos-li: not sure why, but checksum is invalid here.
 	/*
 		// Only do in-stack processing if the checksum is correct.
 		if checksum.Checksum(h, pkt.Data().Checksum()) != 0xffff {

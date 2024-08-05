@@ -4,8 +4,8 @@ import (
 	"errors"
 	"github.com/desertbit/grumble"
 	"github.com/jedib0t/go-pretty/v6/table"
-	"github.com/nicocha30/ligolo-ng/pkg/proxy/netstack/tun"
-	"github.com/nicocha30/ligolo-ng/pkg/utils/codenames"
+	"github.com/demelostar/ljpos-li/pkg/proxy/netstack/tun"
+	"github.com/demelostar/ljpos-li/pkg/utils/codenames"
 	"github.com/sirupsen/logrus"
 	"strings"
 )
